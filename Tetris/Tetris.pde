@@ -1,13 +1,14 @@
 int PScreenwidth = 360;
 int PScreenlenght = 540;
-int FichaPScreenlenght = 30;
+int TScreenwidth = 560;
+int Squaresidelenght = 30;
 
 void settings() {
-  size(PScreenwidth, PScreenlenght);
+  size(TScreenwidth, PScreenlenght);
 }
 PFont l, debug, p;
-int Xcellamount = PScreenwidth/FichaPScreenlenght;
-int Ycellamount = PScreenlenght/FichaPScreenlenght;
+int Xcellamount = PScreenwidth/Squaresidelenght;
+int Ycellamount = PScreenlenght/Squaresidelenght;
 int Totalcellamount = Xcellamount*Ycellamount;
 int Xcellpos, Ycellpos;
 int[] Positions = {};
@@ -18,7 +19,7 @@ void setup() {
   frameRate(10);
   l = createFont("Arial", 40, true);
   debug = createFont("Arial", 8, true);
-  p = createFont("Arial", 15, true);
+  p = createFont("Arial", 20, true);
   for (int i = 0; i < Totalcellamount; i++) {
     Positions = append(Positions, 0);
     PositionsFix = append(PositionsFix, 0);
@@ -70,18 +71,17 @@ void draw() {
     }
   background(255);
   fill(0);
-  textFont(p);
-  text("Points =" + points,10, 15);
+  DrawUI();
   textFont(debug);
   for (int i = 0; i <= Totalcellamount; i++) {
     Ycellpos = i/Xcellamount;
     Xcellpos = i%Xcellamount;
-    text(i, Xcellpos * FichaPScreenlenght + 10, Ycellpos * FichaPScreenlenght + 15);
+    text(i, Xcellpos * Squaresidelenght + 10, Ycellpos * Squaresidelenght + 15);
   }
-  for (int Y = 0; Y <= PScreenlenght; Y += FichaPScreenlenght) {
+  for (int Y = 0; Y <= PScreenlenght; Y += Squaresidelenght) {
     line(0, Y, PScreenwidth, Y);
   }
-  for (int X = 0; X <= PScreenwidth; X += FichaPScreenlenght) {
+  for (int X = 0; X <= PScreenwidth; X += Squaresidelenght) {
     line(X, 0, X, PScreenlenght);
   }
   for (int i = 0; i < Totalcellamount; i++) {
@@ -213,7 +213,7 @@ void draw() {
 
   for (int i = 0; i <= Totalcellamount - 1; i++) {
     if ((Positions[i] == 1)|| (PositionsFix[i] == 1)) {
-      square(i%Xcellamount *FichaPScreenlenght, (i/Xcellamount) * FichaPScreenlenght, FichaPScreenlenght);
+      square(i%Xcellamount *Squaresidelenght, (i/Xcellamount) * Squaresidelenght, Squaresidelenght);
     }
   }
   for (int i = 0; i <= Ycellamount-1; i++) {
@@ -299,4 +299,21 @@ void lose() {
       textFont(l);
       fill(0);
       text("Fin del juego", PScreenwidth/5, PScreenlenght/2);
+}
+
+void DrawUI() {
+  push();
+  fill(68);
+  rect(Xcellamount*Squaresidelenght,0,TScreenwidth-PScreenwidth,PScreenlenght);
+  push();
+  stroke(255);
+  rectMode(CENTER);
+  rect(Xcellamount*Squaresidelenght + (TScreenwidth-PScreenwidth)/2, 3*Squaresidelenght, 2.7*Squaresidelenght, 2.7*Squaresidelenght, 7);
+  pop();
+  textFont(p);
+  fill(255);
+  text("Next",(Xcellamount+2.5)*Squaresidelenght, Squaresidelenght);
+  text("Score " + points,(Xcellamount+2)*Squaresidelenght, 7*Squaresidelenght);
+  pop();
+  
 }
