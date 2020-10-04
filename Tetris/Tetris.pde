@@ -1,15 +1,14 @@
-int ancho = 510;
-int largo = 720;
-int Fichalargo = 30;
+int PScreenwidth = 360;
+int PScreenlenght = 540;
+int FichaPScreenlenght = 30;
 
 void settings() {
-  size(ancho, largo);
+  size(PScreenwidth, PScreenlenght);
 }
-PFont f, g, l;
-int Xcellamount = ancho/Fichalargo;
-int Ycellamount = largo/Fichalargo;
+PFont l, debug, p;
+int Xcellamount = PScreenwidth/FichaPScreenlenght;
+int Ycellamount = PScreenlenght/FichaPScreenlenght;
 int Totalcellamount = Xcellamount*Ycellamount;
-int line = 0;
 int Xcellpos, Ycellpos;
 int[] Positions = {};
 int[] PositionsFix = {};
@@ -17,8 +16,9 @@ int[] PositionsFailing = {0, 0, 0, 0};
 
 void setup() {
   frameRate(10);
-  f = createFont("Arial", 40, true);
-  g = createFont("Arial", 8, true);
+  l = createFont("Arial", 40, true);
+  debug = createFont("Arial", 8, true);
+  p = createFont("Arial", 15, true);
   for (int i = 0; i < Totalcellamount; i++) {
     Positions = append(Positions, 0);
     PositionsFix = append(PositionsFix, 0);
@@ -28,7 +28,7 @@ void setup() {
 
 float R, G, B;
 int pos = (int)random(2, Xcellamount-2);
-int state = 0;
+int state, points;
 int form = (int)random(7);
 int rotation = 0;
 int turn = 0;
@@ -36,6 +36,7 @@ boolean Lside, Rside, Bottom, lose;
 
 void draw() {
   state = 1;
+  points = 0;
   Bottom = false;
   for (int i = 0; i <= 3; i++) {
     if (PositionsFailing[i]/Xcellamount >= Ycellamount-1) {
@@ -68,18 +69,20 @@ void draw() {
     } 
     }
   background(255);
-  textFont(g);
   fill(0);
+  textFont(p);
+  text("Points =" + points,10, 15);
+  textFont(debug);
   for (int i = 0; i <= Totalcellamount; i++) {
     Ycellpos = i/Xcellamount;
     Xcellpos = i%Xcellamount;
-    text(i, Xcellpos * Fichalargo + 10, Ycellpos * Fichalargo + 15);
+    text(i, Xcellpos * FichaPScreenlenght + 10, Ycellpos * FichaPScreenlenght + 15);
   }
-  for (int Y = 0; Y <= largo; Y += Fichalargo) {
-    line(0, Y, ancho, Y);
+  for (int Y = 0; Y <= PScreenlenght; Y += FichaPScreenlenght) {
+    line(0, Y, PScreenwidth, Y);
   }
-  for (int X = 0; X <= ancho; X += Fichalargo) {
-    line(X, 0, X, largo);
+  for (int X = 0; X <= PScreenwidth; X += FichaPScreenlenght) {
+    line(X, 0, X, PScreenlenght);
   }
   for (int i = 0; i < Totalcellamount; i++) {
     Positions[i] =0;
@@ -210,7 +213,7 @@ void draw() {
 
   for (int i = 0; i <= Totalcellamount - 1; i++) {
     if ((Positions[i] == 1)|| (PositionsFix[i] == 1)) {
-      square(i%Xcellamount *Fichalargo, (i/Xcellamount) * Fichalargo, Fichalargo);
+      square(i%Xcellamount *FichaPScreenlenght, (i/Xcellamount) * FichaPScreenlenght, FichaPScreenlenght);
     }
   }
   for (int i = 0; i <= Ycellamount-1; i++) {
@@ -221,6 +224,7 @@ void draw() {
       }
     }
     if (line ==Xcellamount) {
+      points += 100;
       for (int j = 0; j <= Xcellamount-1; j++) {
         PositionsFix[i*Xcellamount + j] = 0;
       }
@@ -283,7 +287,6 @@ Boolean CheckRside() {
 }
 
 Boolean Checklose() {
-    int line = 0;
     for (int i = 0; i <= Xcellamount-1; i++) {
       if (PositionsFix[Xcellamount + i] == 1) {
         return true;
@@ -293,7 +296,7 @@ Boolean Checklose() {
   }
   
 void lose() {
-      textFont(f);
+      textFont(l);
       fill(0);
-      text("Fin del juego", ancho/4, largo/2);
+      text("Fin del juego", PScreenwidth/5, PScreenlenght/2);
 }
