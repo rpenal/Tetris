@@ -5,23 +5,21 @@ int Fichalargo = 30;
 void settings() {
   size(ancho, largo);
 }
-PFont f;
-PFont g;
+PFont f, g, l;
 int Xcellamount = ancho/Fichalargo;
 int Ycellamount = largo/Fichalargo;
-int TotalCells = Xcellamount*Ycellamount;
+int Totalcellamount = Xcellamount*Ycellamount;
 int line = 0;
-int Xcellpos;
-int Ycellpos;
+int Xcellpos, Ycellpos;
 int[] Positions = {};
 int[] PositionsFix = {};
 int[] PositionsFailing = {0, 0, 0, 0};
 
 void setup() {
-  frameRate(60);
-  f = createFont("Arial", 16, true);
+  frameRate(10);
+  f = createFont("Arial", 40, true);
   g = createFont("Arial", 8, true);
-  for (int i = 0; i < TotalCells; i++) {
+  for (int i = 0; i < Totalcellamount; i++) {
     Positions = append(Positions, 0);
     PositionsFix = append(PositionsFix, 0);
   }
@@ -32,33 +30,33 @@ float R, G, B;
 int pos = (int)random(2, Xcellamount-2);
 int state = 0;
 int form = (int)random(7);
-;
 int rotation = 0;
 int turn = 0;
+boolean Lside, Rside, Bottom, lose;
 
 void draw() {
-  delay(100);
-  state = 1;
-  boolean Bottom = false;
 
+  state = 1;
+  Bottom = false;
   for (int i = 0; i <= 3; i++) {
     if (PositionsFailing[i]/Xcellamount >= Ycellamount-1) {
       Bottom = true;
-    } else if ((PositionsFailing[i] + Xcellamount >= 0) && (PositionsFailing[i] + Xcellamount <= TotalCells-1)) {
+    } else if ((PositionsFailing[i] + Xcellamount >= 0) && (PositionsFailing[i] + Xcellamount <= Totalcellamount-1)) {
       if ((PositionsFix[PositionsFailing[i] + Xcellamount] == 1)) {
         Bottom = true;
       }
     }
   }
-
-  if (!Bottom) {
+  if ((!Bottom) && (!lose)) {
     pos += Xcellamount;
-  } else {
+  } else if ((Bottom) && (!lose)){
     if (turn ==0) {
       turn = 1;
     } else if (turn == 1) {
       for (int i = 0; i <= 3; i++) {
+        if ((PositionsFailing[i] >= 0) && (PositionsFailing[i] <= Totalcellamount-1)) {
         PositionsFix[PositionsFailing[i]] = 1;
+        }
         PositionsFailing[i] = 0;
       }
       pos = (int)random(2, Xcellamount-2);
@@ -66,14 +64,14 @@ void draw() {
       form = (int)random(7);
       rotation = 0;
       turn =0;
+    } 
     }
-  }
   background(255);
   textFont(g);
-  for (int i = 0; i <= TotalCells; i++) {
+  fill(0);
+  for (int i = 0; i <= Totalcellamount; i++) {
     Ycellpos = i/Xcellamount;
     Xcellpos = i%Xcellamount;
-    fill(0);
     text(i, Xcellpos * Fichalargo + 10, Ycellpos * Fichalargo + 15);
   }
   for (int Y = 0; Y <= largo; Y += Fichalargo) {
@@ -82,12 +80,14 @@ void draw() {
   for (int X = 0; X <= ancho; X += Fichalargo) {
     line(X, 0, X, largo);
   }
-  for (int i = 0; i < TotalCells; i++) {
+  for (int i = 0; i < Totalcellamount; i++) {
     Positions[i] =0;
   }
+  if (lose) {
+      noLoop();
+      lose();
+  }
   fill(0, 100, 255);
-
-
   if (form == 0) {
     /* T */
     if (rotation == 0) {
@@ -205,13 +205,13 @@ void draw() {
   }
 
   for (int i = 0; i <= 3; i++) {
-    if ((PositionsFailing[i]>= 0) && (PositionsFailing[i]<= TotalCells-1)) {
+    if ((PositionsFailing[i]>= 0) && (PositionsFailing[i]<= Totalcellamount-1)) {
       Positions[PositionsFailing[i]] = 1;
     }
   }
 
 
-  for (int i = 0; i <= TotalCells - 1; i++) {
+  for (int i = 0; i <= Totalcellamount - 1; i++) {
     if ((Positions[i] == 1)|| (PositionsFix[i] == 1)) {
       square(i%Xcellamount *Fichalargo, (i/Xcellamount) * Fichalargo, Fichalargo);
     }
@@ -236,33 +236,8 @@ void draw() {
   }
 }
 void keyPressed() {
-  boolean Lside = false;
-  boolean Rside = false;
-  boolean Bottom = false;
-  for (int i = 0; i <= 3; i++) {
-    if (PositionsFailing[i]%Xcellamount ==0) {
-      Lside = true;
-    }
-    if ((PositionsFailing[i] - 1 >= 0) && (PositionsFailing[i] - 1 <= TotalCells-1)) {
-      if ((PositionsFix[PositionsFailing[i] - 1] == 1)) {
-        Lside = true;
-      }
-    }
-    
-    if (PositionsFailing[i]%Xcellamount == Xcellamount-1) {
-      Rside = true;
-    }
-    if ((PositionsFailing[i] + 1 >= 0) && (PositionsFailing[i] + 1 <= TotalCells-1)) {
-      if ((PositionsFix[PositionsFailing[i] + 1] == 1)) {
-        Rside = true;
-      }
-    }
-
-    if (PositionsFailing[i]/Xcellamount >= Ycellamount-2) {
-      Bottom = true;
-    }
-
-  }
+  Lside = CheckLside();
+  Rside = CheckRside();
   if ((keyCode == LEFT)&& (!Lside) && (state == 1) && (turn <1)) {
     pos--;
     state = 0;
@@ -275,4 +250,49 @@ void keyPressed() {
       rotation = rotation%4;
     }
   }
+}
+
+Boolean CheckLside() {
+  for (int i = 0; i <= 3; i++) {
+    if (PositionsFailing[i]%Xcellamount ==0) {
+      return true;
+    }
+    if ((PositionsFailing[i] - 1 >= 0) && (PositionsFailing[i] - 1 <= Totalcellamount-1) && (PositionsFailing[i] + Xcellamount - 1 >= 0) && (PositionsFailing[i] + Xcellamount -  1 <= Totalcellamount-1)) {
+      if ((PositionsFix[PositionsFailing[i] - 1] == 1) || (PositionsFix[PositionsFailing[i] + Xcellamount - 1] == 1)) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
+Boolean CheckRside() {
+  for (int i = 0; i <= 3; i++) {
+    if (PositionsFailing[i]%Xcellamount == Xcellamount-1) {
+      return true;
+    }
+    if ((PositionsFailing[i] + 1 >= 0) && (PositionsFailing[i] + 1 <= Totalcellamount-1) && (PositionsFailing[i] + Xcellamount + 1 >= 0) && (PositionsFailing[i] + Xcellamount+  1 <= Totalcellamount-1)) {
+      if ((PositionsFix[PositionsFailing[i] + 1] == 1) || (PositionsFix[PositionsFailing[i] + Xcellamount + 1] == 1)) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
+Boolean Checklose() {
+    int line = 0;
+    for (int i = 0; i <= Xcellamount-1; i++) {
+      if (PositionsFix[Xcellamount + i] == 1) {
+        return true;
+      }
+    }
+      return false;
+  }
+  
+void lose() {
+      textFont(f);
+      text("Fin del juego", ancho/2, largo/2);
+      delay(2000);
+      exit();
 }
