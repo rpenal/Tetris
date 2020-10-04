@@ -35,7 +35,6 @@ int turn = 0;
 boolean Lside, Rside, Bottom, lose;
 
 void draw() {
-
   state = 1;
   Bottom = false;
   for (int i = 0; i <= 3; i++) {
@@ -47,6 +46,8 @@ void draw() {
       }
     }
   }
+  lose = Checklose();
+  println(lose);
   if ((!Bottom) && (!lose)) {
     pos += Xcellamount;
   } else if ((Bottom) && (!lose)){
@@ -82,10 +83,6 @@ void draw() {
   }
   for (int i = 0; i < Totalcellamount; i++) {
     Positions[i] =0;
-  }
-  if (lose) {
-      noLoop();
-      lose();
   }
   fill(0, 100, 255);
   if (form == 0) {
@@ -234,6 +231,11 @@ void draw() {
       }
     }
   }
+  if (lose) {
+      noLoop();
+      delay(1000);
+      lose();
+  }
 }
 void keyPressed() {
   Lside = CheckLside();
@@ -292,7 +294,6 @@ Boolean Checklose() {
   
 void lose() {
       textFont(f);
-      text("Fin del juego", ancho/2, largo/2);
-      delay(2000);
-      exit();
+      fill(0);
+      text("Fin del juego", ancho/4, largo/2);
 }
