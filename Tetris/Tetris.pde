@@ -30,7 +30,8 @@ void setup() {
 float R, G, B;
 int pos = (int)random(2, Xcellamount-2);
 int state, points;
-int form = (int)random(7);
+int next =(int)random(7);
+int form =(int)random(7);
 int rotation = 0;
 int turn = 0;
 boolean Lside, Rside, Bottom, lose;
@@ -52,23 +53,24 @@ void draw() {
   println(lose);
   if ((!Bottom) && (!lose)) {
     pos += Xcellamount;
-  } else if ((Bottom) && (!lose)){
+  } else if ((Bottom) && (!lose)) {
     if (turn ==0) {
       turn = 1;
     } else if (turn == 1) {
       for (int i = 0; i <= 3; i++) {
         if ((PositionsFailing[i] >= 0) && (PositionsFailing[i] <= Totalcellamount-1)) {
-        PositionsFix[PositionsFailing[i]] = 1;
+          PositionsFix[PositionsFailing[i]] = 1;
         }
         PositionsFailing[i] = 0;
       }
       pos = (int)random(2, Xcellamount-2);
       Bottom = false;
-      form = (int)random(7);
+      form = next;
+      next = (int)random(7);
       rotation = 0;
       turn =0;
-    } 
     }
+  }
   background(255);
   fill(0);
   DrawUI();
@@ -236,9 +238,9 @@ void draw() {
     }
   }
   if (lose) {
-      noLoop();
-      delay(1000);
-      lose();
+    noLoop();
+    delay(1000);
+    lose();
   }
 }
 void keyPressed() {
@@ -287,24 +289,24 @@ Boolean CheckRside() {
 }
 
 Boolean Checklose() {
-    for (int i = 0; i <= Xcellamount-1; i++) {
-      if (PositionsFix[Xcellamount + i] == 1) {
-        return true;
-      }
+  for (int i = 0; i <= Xcellamount-1; i++) {
+    if (PositionsFix[Xcellamount + i] == 1) {
+      return true;
     }
-      return false;
   }
-  
+  return false;
+}
+
 void lose() {
-      textFont(l);
-      fill(0);
-      text("Fin del juego", PScreenwidth/5, PScreenlenght/2);
+  textFont(l);
+  fill(0);
+  text("Fin del juego", PScreenwidth/5, PScreenlenght/2);
 }
 
 void DrawUI() {
   push();
   fill(68);
-  rect(Xcellamount*Squaresidelenght,0,TScreenwidth-PScreenwidth,PScreenlenght);
+  rect(Xcellamount*Squaresidelenght, 0, TScreenwidth-PScreenwidth, PScreenlenght);
   push();
   stroke(255);
   rectMode(CENTER);
@@ -312,8 +314,51 @@ void DrawUI() {
   pop();
   textFont(p);
   fill(255);
-  text("Next",(Xcellamount+2.5)*Squaresidelenght, Squaresidelenght);
-  text("Score " + points,(Xcellamount+2)*Squaresidelenght, 7*Squaresidelenght);
+  text("Next", (Xcellamount+2.5)*Squaresidelenght, Squaresidelenght);
+  text("Score " + points, (Xcellamount+2)*Squaresidelenght, 7*Squaresidelenght);
+  fill(0, 100, 255);
+  if (next == 0) {
+    /* T */
+    square((Xcellamount+3+0+0)*Squaresidelenght, Squaresidelenght*(3+0+0), Squaresidelenght/2);
+    square((Xcellamount+3+0-0.5)*Squaresidelenght, Squaresidelenght*(3+0+0), Squaresidelenght/2);
+    square((Xcellamount+3+0+0.5)*Squaresidelenght, Squaresidelenght*(3+0+0), Squaresidelenght/2);
+    square((Xcellamount+3+0+0)*Squaresidelenght, Squaresidelenght*(3+0-0.5), Squaresidelenght/2);
+  } else if (next == 1) {
+    /* J */
+    square((Xcellamount+3+0.2+0)*Squaresidelenght, Squaresidelenght*(3+0.2+0), Squaresidelenght/2);
+    square((Xcellamount+3+0.2-0.5)*Squaresidelenght, Squaresidelenght*(3+0.2+0), Squaresidelenght/2);
+    square((Xcellamount+3+0.2+0)*Squaresidelenght, Squaresidelenght*(3+0.2-1), Squaresidelenght/2);
+    square((Xcellamount+3+0.2+0)*Squaresidelenght, Squaresidelenght*(3+0.2-0.5), Squaresidelenght/2);
+  } else if (next == 2) {
+    /*L */
+    square((Xcellamount+3-0.2+0)*Squaresidelenght, Squaresidelenght*(3+0.2+0), Squaresidelenght/2);
+    square((Xcellamount+3-0.2+0.5)*Squaresidelenght, Squaresidelenght*(3+0.2+0), Squaresidelenght/2);
+    square((Xcellamount+3-0.2+0)*Squaresidelenght, Squaresidelenght*(3+0.2-1), Squaresidelenght/2);
+    square((Xcellamount+3-0.2+0)*Squaresidelenght, Squaresidelenght*(3+0.2-0.5), Squaresidelenght/2);
+  } else if (next == 3) {
+    /* Z */
+    square((Xcellamount+3+0+0)*Squaresidelenght, Squaresidelenght*(3+0+0), Squaresidelenght/2);
+    square((Xcellamount+3+0-0.5)*Squaresidelenght, Squaresidelenght*(3+0-0.5), Squaresidelenght/2);
+    square((Xcellamount+3+0+0.5)*Squaresidelenght, Squaresidelenght*(3+0+0), Squaresidelenght/2);
+    square((Xcellamount+3+0+0)*Squaresidelenght, Squaresidelenght*(3+0-0.5), Squaresidelenght/2);
+  } else if (next == 4) {
+    /* S */
+    square((Xcellamount+3+0+0)*Squaresidelenght, Squaresidelenght*(3+0+0), Squaresidelenght/2);
+    square((Xcellamount+3+0-0.5)*Squaresidelenght, Squaresidelenght*(3+0+0), Squaresidelenght/2);
+    square((Xcellamount+3+0+0.5)*Squaresidelenght, Squaresidelenght*(3+0-0.5), Squaresidelenght/2);
+    square((Xcellamount+3+0+0)*Squaresidelenght, Squaresidelenght*(3+0-0.5), Squaresidelenght/2);
+  } else if (next == 5) {
+    /* I */
+    square((Xcellamount+3+0+0)*Squaresidelenght, Squaresidelenght*(3+0+0.5), Squaresidelenght/2);
+    square((Xcellamount+3+0+0)*Squaresidelenght, Squaresidelenght*(3+0+0), Squaresidelenght/2);
+    square((Xcellamount+3+0+0)*Squaresidelenght, Squaresidelenght*(3+0-1), Squaresidelenght/2);
+    square((Xcellamount+3+0+0)*Squaresidelenght, Squaresidelenght*(3+0-0.5), Squaresidelenght/2);
+  } else if (next == 6) {
+    /* SQ */
+    square((Xcellamount+3-0.2+0.5)*Squaresidelenght, Squaresidelenght*(3+0-0.5), Squaresidelenght/2);
+    square((Xcellamount+3-0.2+0.5)*Squaresidelenght, Squaresidelenght*(3+0+0), Squaresidelenght/2);
+    square((Xcellamount+3-0.2+0)*Squaresidelenght, Squaresidelenght*(3+0+0), Squaresidelenght/2);
+    square((Xcellamount+3-0.2+0)*Squaresidelenght, Squaresidelenght*(3+0-0.5), Squaresidelenght/2);
+  }
   pop();
-  
 }
