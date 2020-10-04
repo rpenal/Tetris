@@ -18,7 +18,6 @@ int[] PositionsFailing = {0, 0, 0, 0};
 void setup() {
   frameRate(10);
   l = createFont("Arial", 40, true);
-  debug = createFont("Arial", 8, true);
   p = createFont("Arial", 20, true);
   for (int i = 0; i < Totalcellamount; i++) {
     Positions = append(Positions, 0);
@@ -29,7 +28,8 @@ void setup() {
 
 float R, G, B;
 int pos = (int)random(2, Xcellamount-2);
-int state, points;
+int state; 
+int points = 0;
 int next =(int)random(7);
 int form =(int)random(7);
 int rotation = 0;
@@ -38,7 +38,6 @@ boolean Lside, Rside, Bottom, lose;
 
 void draw() {
   state = 1;
-  points = 0;
   Bottom = false;
   for (int i = 0; i <= 3; i++) {
     if (PositionsFailing[i]/Xcellamount >= Ycellamount-1) {
@@ -50,7 +49,6 @@ void draw() {
     }
   }
   lose = Checklose();
-  println(lose);
   if ((!Bottom) && (!lose)) {
     pos += Xcellamount;
   } else if ((Bottom) && (!lose)) {
@@ -74,12 +72,7 @@ void draw() {
   background(255);
   fill(0);
   DrawUI();
-  textFont(debug);
-  for (int i = 0; i <= Totalcellamount; i++) {
-    Ycellpos = i/Xcellamount;
-    Xcellpos = i%Xcellamount;
-    text(i, Xcellpos * Squaresidelenght + 10, Ycellpos * Squaresidelenght + 15);
-  }
+  debug();
   for (int Y = 0; Y <= PScreenlenght; Y += Squaresidelenght) {
     line(0, Y, PScreenwidth, Y);
   }
@@ -226,9 +219,9 @@ void draw() {
       }
     }
     if (line ==Xcellamount) {
-      points += 100;
       for (int j = 0; j <= Xcellamount-1; j++) {
         PositionsFix[i*Xcellamount + j] = 0;
+        points += 10;
       }
       for (int k = i; k>=1; k--) {
         for (int m = 0; m <= 23; m++) {
@@ -239,7 +232,6 @@ void draw() {
   }
   if (lose) {
     noLoop();
-    delay(1000);
     lose();
   }
 }
@@ -316,6 +308,9 @@ void DrawUI() {
   fill(255);
   text("Next", (Xcellamount+2.5)*Squaresidelenght, Squaresidelenght);
   text("Score " + points, (Xcellamount+2)*Squaresidelenght, 7*Squaresidelenght);
+  text("Spacebar = rotate", (Xcellamount+0.5)*Squaresidelenght, 9*Squaresidelenght);
+  text("Move with left ", (Xcellamount+1.25)*Squaresidelenght, 11*Squaresidelenght);
+  text("and right arrows ", (Xcellamount+1)*Squaresidelenght, 12*Squaresidelenght);
   fill(0, 100, 255);
   if (next == 0) {
     /* T */
@@ -361,4 +356,14 @@ void DrawUI() {
     square((Xcellamount+3-0.2+0)*Squaresidelenght, Squaresidelenght*(3+0-0.5), Squaresidelenght/2);
   }
   pop();
+}
+
+void debug() {
+  debug = createFont("Arial", 8, true);
+  textFont(debug);
+  for (int i = 0; i <= Totalcellamount; i++) {
+    Ycellpos = i/Xcellamount;
+    Xcellpos = i%Xcellamount;
+    text(i, Xcellpos * Squaresidelenght + 10, Ycellpos * Squaresidelenght + 15);
+  }
 }
