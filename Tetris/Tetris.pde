@@ -21,7 +21,7 @@ void settings() {
 //Positions servirá para representar el tablero
 //PositionsFix servirá para representar las fichas que el jugador no puede mover
 //PositionsFailing servirá para representar las fichas sobre las que el jugador tiene control.
-//Se inicializa en {0,0,0,0}, ya que su longitud no depende de factores externos. Cada "0" representa una de las fichas del tetrominó
+//Se inicializa en {0,0,0,0}, ya que su longitud no depende de factores externos. Cada "0" representa una de las posiciones de las fichas del tetrominó
 //pos representa la posicion "base" del tetrominó que el jugador controla. Las demas posiciones de las fichas 
 //del tetrominó serán dadas en base a esta. Se genera aleatoriamente en un margen de dos fichas alejado de los bordes
 //del tablero para así poder evitar errores
