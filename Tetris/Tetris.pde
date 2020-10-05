@@ -6,7 +6,7 @@ int Squaresidelenght = 30;
 void settings() {
   size(TScreenwidth, PScreenlenght);
 }
-PFont l, debug, p;
+PFont l, p;
 int Xcellamount = PScreenwidth/Squaresidelenght;
 int Ycellamount = PScreenlenght/Squaresidelenght;
 int Totalcellamount = Xcellamount*Ycellamount;
@@ -73,7 +73,6 @@ void draw() {
   background(255);
   fill(0);
   DrawUI();
-  debug();
   for (int Y = 0; Y <= PScreenlenght; Y += Squaresidelenght) {
     line(0, Y, PScreenwidth, Y);
   }
