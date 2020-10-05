@@ -357,13 +357,3 @@ void DrawUI() {
   }
   pop();
 }
-
-void debug() {
-  debug = createFont("Arial", 8, true);
-  textFont(debug);
-  for (int i = 0; i <= Totalcellamount; i++) {
-    Ycellpos = i/Xcellamount;
-    Xcellpos = i%Xcellamount;
-    text(i, Xcellpos * Squaresidelenght + 10, Ycellpos * Squaresidelenght + 15);
-  }
-}
