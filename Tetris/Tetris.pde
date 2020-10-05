@@ -11,12 +11,12 @@ int Xcellamount = PScreenwidth/Squaresidelenght;
 int Ycellamount = PScreenlenght/Squaresidelenght;
 int Totalcellamount = Xcellamount*Ycellamount;
 int Xcellpos, Ycellpos;
+int framerate = 5;
 int[] Positions = {};
 int[] PositionsFix = {};
 int[] PositionsFailing = {0, 0, 0, 0};
 
 void setup() {
-  frameRate(10);
   l = createFont("Arial", 40, true);
   p = createFont("Arial", 20, true);
   for (int i = 0; i < Totalcellamount; i++) {
@@ -37,6 +37,7 @@ int turn = 0;
 boolean Lside, Rside, Bottom, lose;
 
 void draw() {
+  frameRate(framerate);
   state = 1;
   Bottom = false;
   for (int i = 0; i <= 3; i++) {
@@ -64,7 +65,7 @@ void draw() {
       pos = (int)random(2, Xcellamount-2);
       Bottom = false;
       form = next;
-      next = (int)random(7);
+      next =(int)random(7);
       rotation = 0;
       turn =0;
     }
@@ -219,15 +220,16 @@ void draw() {
       }
     }
     if (line ==Xcellamount) {
+      points += 100;
       for (int j = 0; j <= Xcellamount-1; j++) {
         PositionsFix[i*Xcellamount + j] = 0;
-        points += 10;
       }
       for (int k = i; k>=1; k--) {
-        for (int m = 0; m <= 23; m++) {
+        for (int m = 0; m <= Xcellamount-1; m++) {
           PositionsFix[k*Xcellamount + m] = PositionsFix[k*Xcellamount + m - Xcellamount];
         }
       }
+      framerate += points/300;
     }
   }
   if (lose) {
@@ -249,7 +251,9 @@ void keyPressed() {
     if (rotation >= 4) {
       rotation = rotation%4;
     }
-  }
+  } else if (keyCode == DOWN) {
+      frameRate(3*framerate);
+    }
 }
 
 Boolean CheckLside() {
@@ -257,10 +261,8 @@ Boolean CheckLside() {
     if (PositionsFailing[i]%Xcellamount ==0) {
       return true;
     }
-    if ((PositionsFailing[i] - 1 >= 0) && (PositionsFailing[i] - 1 <= Totalcellamount-1) && (PositionsFailing[i] + Xcellamount - 1 >= 0) && (PositionsFailing[i] + Xcellamount -  1 <= Totalcellamount-1)) {
-      if ((PositionsFix[PositionsFailing[i] - 1] == 1) || (PositionsFix[PositionsFailing[i] + Xcellamount - 1] == 1)) {
+    if (((PositionsFailing[i] - 1 >= 0) && (PositionsFailing[i] - 1 <= Totalcellamount-1)  && (PositionsFix[PositionsFailing[i] - 1] == 1)) || (((PositionsFailing[i] + Xcellamount - 1 >= 0) && (PositionsFailing[i] + Xcellamount -  1 <= Totalcellamount-1))  && (PositionsFix[PositionsFailing[i] + Xcellamount - 1] == 1))) {
         return true;
-      }
     }
   }
   return false;
@@ -271,10 +273,8 @@ Boolean CheckRside() {
     if (PositionsFailing[i]%Xcellamount == Xcellamount-1) {
       return true;
     }
-    if ((PositionsFailing[i] + 1 >= 0) && (PositionsFailing[i] + 1 <= Totalcellamount-1) && (PositionsFailing[i] + Xcellamount + 1 >= 0) && (PositionsFailing[i] + Xcellamount+  1 <= Totalcellamount-1)) {
-      if ((PositionsFix[PositionsFailing[i] + 1] == 1) || (PositionsFix[PositionsFailing[i] + Xcellamount + 1] == 1)) {
+    if (((PositionsFailing[i] + 1 >= 0) && (PositionsFailing[i] + 1 <= Totalcellamount-1)  && (PositionsFix[PositionsFailing[i] + 1] == 1)) || (((PositionsFailing[i] + Xcellamount + 1 >= 0) && (PositionsFailing[i] + Xcellamount +  1 <= Totalcellamount-1)  && (PositionsFix[PositionsFailing[i] + Xcellamount + 1] == 1)))) {
         return true;
-      }
     }
   }
   return false;
@@ -308,9 +308,9 @@ void DrawUI() {
   fill(255);
   text("Next", (Xcellamount+2.5)*Squaresidelenght, Squaresidelenght);
   text("Score " + points, (Xcellamount+2)*Squaresidelenght, 7*Squaresidelenght);
-  text("Spacebar = rotate", (Xcellamount+0.5)*Squaresidelenght, 9*Squaresidelenght);
-  text("Move with left ", (Xcellamount+1.25)*Squaresidelenght, 11*Squaresidelenght);
-  text("and right arrows ", (Xcellamount+1)*Squaresidelenght, 12*Squaresidelenght);
+  text("Rotate with \n spacebar", (Xcellamount+1.5)*Squaresidelenght, 9*Squaresidelenght);
+  text("\n Move with left\nand right arrows. \n", (Xcellamount+1.25)*Squaresidelenght, 11*Squaresidelenght);
+  text(" \n Accelerate \n with down", (Xcellamount+1.25)*Squaresidelenght, 14*Squaresidelenght);
   fill(0, 100, 255);
   if (next == 0) {
     /* T */
