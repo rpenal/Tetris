@@ -34,6 +34,6 @@ Igualmente, se puede acelerar el juego a 3 veces la velocidad actual oprimiendo 
 
 ## Errores conocidos.
 
-* Si la figura se encuentra en alguno de los costados y se la intenta rotar, alguno de los extremos aparecerá al otro lado de la pantalla, y una fila por encima. Esto es así debido a la forma en que se calculan las posiciones y las rotaciones. Ademas, debido a como se verifica la colision a derecha e izquierda, la ficha no podrá moverse horizontalmente si no se la rota primero. para devolverla a su estado original.
+* Si la figura se encuentra en alguno de los costados y se la intenta rotar, alguno de los extremos aparecerá al otro lado de la pantalla, y una fila por encima. Esto es así debido a la forma en que se calculan las posiciones y las rotaciones. Ademas, debido a como se verifica la colision a derecha e izquierda, la ficha no podrá moverse horizontalmente si no se la rota primero, para devolverla a su estado original.
 
 * Cuando la partida termina, la ultima ficha en salir puede ser movida horizontalmente por el jugador, aunque no cae.
